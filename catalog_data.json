@@ -1,0 +1,60 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Овощи",
+      "description": "В данной категории присутствуют овощи с разных уголков Земли."
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Фрукты",
+      "description": "В данной категории присутствуют все фрукты из разных уголков Земли"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Техника",
+      "description": "В данной категории собраны последние модели разной бытовой техники."
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Морепродукты",
+      "description": "Продукты морского происхождения с разных уголков мира."
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Драгонфрукт",
+      "description": "Привезенный с прекрасный островов Индонезии",
+      "image": "",
+      "category": 2,
+      "price": 1500,
+      "created_at": "2024-02-29T11:21:19Z",
+      "updated_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Часы",
+      "description": "Новомодные часы последнего поколения.",
+      "image": "",
+      "category": 3,
+      "price": 500000,
+      "created_at": "2024-02-29T11:22:11Z",
+      "updated_at": null
+    }
+  }
+]
