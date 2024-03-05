@@ -8,7 +8,10 @@ def contacts(request):
 
 
 def home(request):
-    return render(request, 'catalog/home.html')
+    context = {
+        'object_list': Product.objects.all(),
+    }
+    return render(request, 'catalog/home.html', context)
 
 
 def base_product(request):
@@ -22,8 +25,8 @@ def product_pk(request, pk):
     return render(request, 'catalog/product_pk.html', context)
 
 
-def product_list(request):
-    context = {
-        'object_list': Product.objects.all(),
-    }
-    return render(request, 'catalog/product_list.html', context)
+# def product_list(request):
+#     context = {
+#         'object_list': Product.objects.all(),
+#     }
+#     return render(request, 'catalog/product_list.html', context)

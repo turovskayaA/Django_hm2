@@ -164,15 +164,9 @@
 <header data-bs-theme="dark">
     <div class="collapse text-bg-dark" id="navbarHeader">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-4 offset-md-1 py-4">
-                    <h4>Меню</h4>
-                    <nav class="ms-5">
-                        <li><a class="p-2 btn btn-outline-primary" href="/">Каталог</a></li>
-                        <li><a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a></li>
-                        <li><a class="p-2 btn btn-outline-primary" href="/base_product/">Товар</a></li>
-                    </nav>
-                </div>
+            {% block menu %}
+            {% include 'catalog/menu.html' %}
+            {% endblock %}
             </div>
         </div>
     </div>
@@ -200,7 +194,7 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Товар</h1>
+                <h1 class="fw-light">{% block title %} Главная страница {% endblock %}</h1>
             </div>
         </div>
     </section>
@@ -214,16 +208,7 @@
 
 </main>
 
-<footer class="text-body-secondary py-5">
-    <div class="container">
-        <p class="float-end mb-1">
-            <a href="#">Back to top</a>
-        </p>
-        <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-        <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a
-                href="../getting-started/introduction/">getting started guide</a>.</p>
-    </div>
-</footer>
+
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 

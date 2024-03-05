@@ -1,6 +1,7 @@
 {% extends 'catalog/base_product.html' %}
 
 {% load image_tag %}
+{% block title %} О товаре {% endblock %}
 
 {% block content %}
 <div class="col">
@@ -10,7 +11,7 @@
         <div class="card-body">
             <h4><p class="card-text">{{ object_list.name }}</p></h4>
             <p class="card-text">Стоимость: {{ object_list.price }} р</p>
-            <p class="card-text">Описание: {{ object_list.description | truncatechars:100}}</p>
+            <p class="card-text">Описание: {{ object_list.description }}</p>
         </div>
     </div>
 </div>
