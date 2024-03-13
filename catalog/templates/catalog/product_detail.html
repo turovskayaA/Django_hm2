@@ -7,11 +7,11 @@
 <div class="col">
     <div class="card shadow-sm">
         <img class="card-img-top"
-             src="{% mymedia object_list.image %}">
+             src="{% mymedia object.image %}">
         <div class="card-body">
-            <h4><p class="card-text">{{ object_list.name }}</p></h4>
-            <p class="card-text">Стоимость: {{ object_list.price }} р</p>
-            <p class="card-text">Описание: {{ object_list.description }}</p>
+            <h4><p class="card-text">{{ object.name }}</p></h4>
+            <p class="card-text">Стоимость: {{ object.price }} р</p>
+            <p class="card-text">Описание: {{ object.description }}</p>
         </div>
     </div>
 </div>
