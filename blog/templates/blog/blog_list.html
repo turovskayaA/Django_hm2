@@ -1,0 +1,26 @@
+{% extends 'catalog/base_product.html' %}
+
+{% load image_tag %}
+
+{% block title %} Блог {% endblock %}
+
+{% block content %}
+
+<a class="btn btn-outline-success" href="{% url 'blog:create' %}"> Добавить статью </a>
+
+{% for object in object_list %}
+<div class="col">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4><p class="card-text">{{ object.title }} </p></h4>
+            <img src="{% mymedia object.image %}" width="150" height="111">
+            <p class="card-text">Содержимое: {{ object.body }} </p>
+            <p class="card-text">Дата создания: {{ object.created_at }} </p>
+            <a href="{% url 'blog:view' object.pk %}">Подробнее</a>
+            <a href="{% url 'blog:edit' object.pk %}" class="w-100 btn btn-lg btn-outline-success"> Редактировать</a>
+            <a href="{% url 'blog:delete' object.pk %}" class="w-100 btn btn-lg btn-outline-success"> Удалить</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
