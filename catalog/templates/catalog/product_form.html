@@ -19,10 +19,20 @@
                     <div class="mb-3">
                         <a href="{% url 'catalog:home' %}" class="w-100 btn btn-lg btn-outline-primary">Обратно</a>
                     </div>
+    <div class="col">
+        <h3> Версии товара </h3>
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-body">
+                {{ formset.management_form }}
+                {% for form in formset.forms %}
+                    {{ form.as_p }}
+                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

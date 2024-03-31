@@ -4,16 +4,15 @@
 {% block title %} О товаре {% endblock %}
 
 {% block content %}
-<div class="col">
+<div class="col-6">
     <div class="card shadow-sm">
-        <img class="card-img-top"
-             src="{% mymedia object.image %}">
+        <img src="{% mymedia object.image %}" class="rounded mx-auto d-block" width="370" height="333">
         <div class="card-body">
             <h4><p class="card-text">{{ object.name }}</p></h4>
             <p class="card-text">Стоимость: {{ object.price }} р</p>
             <p class="card-text">Описание: {{ object.description }}</p>
+            <p class="card-text">Версия: {{ object.active_versions }}</p>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

@@ -3,16 +3,22 @@
 {% load image_tag %}
 
 {% block content %}
+
+<a class="btn btn-outline-success" href="{% url 'catalog:create' %}"> Добавить продукт </a>
+
+
 {% for object in object_list %}
 <div class="col">
     <div class="card shadow-sm">
         <div class="card-body">
             <h4><p class="card-text">{{ object.name }} </p></h4>
-            <img src="{% mymedia object.image %}" class="rounded mx-auto d-block">
+            <img src="{% mymedia object.image %}" class="rounded mx-auto d-block" width="370" height="333">
             <p class="card-text">Стоимость: {{ object.price }} р</p>
             <p class="card-text">Категория: {{ object.category }} </p>
             <p class="card-text">Описание: {{ object.description | truncatechars:100}}</p>
-            <a href="{% url 'catalog:product_pk' object.pk %}">Подробнее</a>
+            <p class="card-text">Версия: {{ object.active_versions }}</p>
+            <a href="{% url 'catalog:view' object.pk %}">Подробнее</a>
+            <a href="{% url 'catalog:delete' object.pk %}" class="w-100 btn btn-lg btn-outline-success"> Удалить</a>
         </div>
     </div>
 </div>

@@ -1,0 +1,21 @@
+{% extends 'catalog/base_product.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <p> Хотите удалить продукт: "{{ object.title | truncatechars:40 }}"? </p>
+                        <button Type="submit" class="btn btn-success"> Подтвердить </button>
+                        <button Type="submit" href="{% url 'catalog:home' %}" class="btn btn-success"> Вернуться назад </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
