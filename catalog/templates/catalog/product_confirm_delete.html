@@ -10,7 +10,7 @@
                         {% csrf_token %}
                         <p> Хотите удалить продукт: "{{ object.title | truncatechars:40 }}"? </p>
                         <button Type="submit" class="btn btn-success"> Подтвердить </button>
-                        <button Type="submit" href="{% url 'catalog:home' %}" class="btn btn-success"> Вернуться назад </button>
+                        <a Type="submit" href="{% url 'catalog:home' %}" class="btn btn-success">Обратно</a>
                     </form>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 from django.db import models
 
+from config import settings
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -24,6 +26,8 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='Цена за покупку', **NULLABLE)
     created_at = models.DateTimeField(verbose_name='Дата создание', auto_now_add=True, **NULLABLE)
     updated_at = models.DateTimeField(verbose_name='Дата последнего изменения', auto_now_add=True, **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Создатель')
+
 
     def __str__(self):
         return f'{self.name} {self.description}'
@@ -40,6 +44,7 @@ class Version(models.Model):
     number_version = models.IntegerField(verbose_name='Номер версии')
     name_version = models.CharField(max_length=50, verbose_name='Название')
     is_current = models.BooleanField(default=True, verbose_name='Активная текущая')
+
 
     def __str__(self):
         return f'{self.number_version} ({self.name_version})'

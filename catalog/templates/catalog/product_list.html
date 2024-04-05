@@ -17,6 +17,7 @@
             <p class="card-text">Категория: {{ object.category }} </p>
             <p class="card-text">Описание: {{ object.description | truncatechars:100}}</p>
             <p class="card-text">Версия: {{ object.active_versions }}</p>
+            <p class="card-text">Создатель: {{ object.owner|default:'Не заполнено' }}</p>
             <a href="{% url 'catalog:view' object.pk %}">Подробнее</a>
             <a href="{% url 'catalog:delete' object.pk %}" class="w-100 btn btn-lg btn-outline-success"> Удалить</a>
         </div>

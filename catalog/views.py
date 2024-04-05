@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -44,11 +45,15 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
 
+    login_url = reverse_lazy('users:login')
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:create')
+
+    login_url = reverse_lazy('users:login')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -69,10 +74,12 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('catalog:create')
+    success_url = reverse_lazy('catalog:home')
+
+    login_url = reverse_lazy('users:login')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -83,13 +90,19 @@ class ProductCreateView(CreateView):
             context_data['formset'] = VersionFormset(instance=self.object)
         return context_data
 
+    # def form_valid(self, form):
+    #     version_formset = self.get_context_data().get('formset')
+    #     self.object = form.save()
+    #     if version_formset:
+    #         if version_formset.is_valid():
+    #             version_formset.instance = self.object
+    #             version_formset.save()
+    #     return super().form_valid(form)
+
     def form_valid(self, form):
-        version_formset = self.get_context_data().get('formset')
         self.object = form.save()
-        if version_formset:
-            if version_formset.is_valid():
-                version_formset.instance = self.object
-                version_formset.save()
+        self.object.owner = self.request.user
+        self.object.save()
         return super().form_valid(form)
 
 
