@@ -90,20 +90,20 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             context_data['formset'] = VersionFormset(instance=self.object)
         return context_data
 
-    # def form_valid(self, form):
-    #     version_formset = self.get_context_data().get('formset')
-    #     self.object = form.save()
-    #     if version_formset:
-    #         if version_formset.is_valid():
-    #             version_formset.instance = self.object
-    #             version_formset.save()
-    #     return super().form_valid(form)
-
     def form_valid(self, form):
+        version_formset = self.get_context_data().get('formset')
         self.object = form.save()
-        self.object.owner = self.request.user
-        self.object.save()
+        if version_formset:
+            if version_formset.is_valid():
+                version_formset.instance = self.object
+                version_formset.save()
         return super().form_valid(form)
+
+    # def form_valid(self, form):
+    #     self.object = form.save()
+    #     self.object.owner = self.request.user
+    #     self.object.save()
+    #     return super().form_valid(form)
 
 
 class ProductDeleteView(DeleteView):
