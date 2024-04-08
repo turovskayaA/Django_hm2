@@ -1,6 +1,6 @@
 from django.db import models
 
-from config import settings
+from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -26,7 +26,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='Цена за покупку', **NULLABLE)
     created_at = models.DateTimeField(verbose_name='Дата создание', auto_now_add=True, **NULLABLE)
     updated_at = models.DateTimeField(verbose_name='Дата последнего изменения', auto_now_add=True, **NULLABLE)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Создатель')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Создатель')
 
 
     def __str__(self):

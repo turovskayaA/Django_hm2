@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, FormView
 
@@ -20,14 +21,29 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         new_user = form.save()
-        new_user.save()
+        new_user.is_active = False
+        secrets_token = ''.join([str(random.randint(0, 9)) for _ in range(10)])
+        new_user.token = secrets_token
+        message = f'Для подтверждения вашего Е-mail перейдите по ссылке http://127.0.0.1:8000/users/verify/?token={secrets_token}'
         send_mail(
-            subject='Поздравляем с регистрацией!',
-            message='Вы зарегистрированы на нашей платформе',
+            subject='Вы зарегистрированы на нашей платформе',
+            message=message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[new_user.email]
         )
         return super().form_valid(form)
+
+
+def activate_user(request):
+    key = request.GET.get('token')
+    current_user = User.objects.filter(is_active=False)
+    for user in current_user:
+        if str(user.token) == str(key):
+            user.is_active = True
+            user.token = None
+            user.save()
+    response = redirect(reverse_lazy('users:login'))
+    return response
 
 
 class ProfileView(UpdateView):
@@ -75,4 +91,3 @@ class RestoreUser(FormView):
             fail_silently=False
         )
         return super().form_valid(form)
-
