@@ -3,9 +3,7 @@
 {% load image_tag %}
 
 {% block content %}
-
 <a class="btn btn-outline-success" href="{% url 'catalog:create' %}"> Добавить продукт </a>
-
 
 {% for object in object_list %}
 <div class="col">
@@ -19,6 +17,7 @@
             <p class="card-text">Версия: {{ object.active_versions }}</p>
             <p class="card-text">Создатель: {{ object.owner|default:'Не заполнено' }}</p>
             <a href="{% url 'catalog:view' object.pk %}">Подробнее</a>
+            <a href="{% url 'catalog:edit' object.pk %}">Редактировать</a>
             <a href="{% url 'catalog:delete' object.pk %}" class="w-100 btn btn-lg btn-outline-success"> Удалить</a>
         </div>
     </div>

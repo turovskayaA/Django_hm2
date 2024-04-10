@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
 
 
@@ -51,7 +52,8 @@ class ProductDetailView(DetailView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('catalog:create')
+    success_url = reverse_lazy('catalog:home')
+    permission_required = 'catalog.change_product'
 
     login_url = reverse_lazy('users:login')
 
@@ -73,6 +75,32 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
                 version_formset.save()
         return super().form_valid(form)
 
+    def get_form_class(self):
+        if self.request.user.is_staff:
+            return ProductModeratorForm
+        else:
+            return ProductForm
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user and not self.request.user.is_staff:
+            raise Http404("Вы не являетесь владельцем этого товара")
+        return self.object
+
+    def test_func(self):
+        user = self.request.user
+        instance: Product = self.get_object()
+        custom_perms: tuple = (
+            'catalog.set_published',
+            'catalog.change_description',
+            'catalog.change_category',
+        )
+
+        if user == instance.owner:
+            return True
+        elif user.groups.filter(name='moderator') and user.has_perms(custom_perms):
+            return True
+        return self.handle_no_permission()
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -105,6 +133,13 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin,  DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:home')
+    login_url = reverse_lazy('users:login')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user and not self.request.user.is_staff:
+            raise Http404("Вы не являетесь владельцем этого товара")
+        return self.object

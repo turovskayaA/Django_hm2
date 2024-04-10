@@ -27,7 +27,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(verbose_name='Дата создание', auto_now_add=True, **NULLABLE)
     updated_at = models.DateTimeField(verbose_name='Дата последнего изменения', auto_now_add=True, **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Создатель')
-
+    is_published = models.BooleanField(default=False, verbose_name='Cтатус публикации')
 
     def __str__(self):
         return f'{self.name} {self.description}'
@@ -35,7 +35,12 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
-        ordering = ('name',)
+
+        permissions = (
+            ('set_published', 'Can publish products'),
+            ('change_description', 'Can change description'),
+            ('change_category', 'Can change category')
+        )
 
 
 class Version(models.Model):
@@ -45,12 +50,9 @@ class Version(models.Model):
     name_version = models.CharField(max_length=50, verbose_name='Название')
     is_current = models.BooleanField(default=True, verbose_name='Активная текущая')
 
-
     def __str__(self):
         return f'{self.number_version} ({self.name_version})'
 
     class Meta:
         verbose_name = 'Версия'
         verbose_name_plural = 'Версии'
-
-
