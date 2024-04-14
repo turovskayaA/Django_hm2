@@ -7,7 +7,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
+from catalog.services import get_cache_product, get_cache_categories
 
 
 class ProductView(View):
@@ -28,6 +29,7 @@ class ProductListView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
+        context_data['product_list'] = get_cache_product()
         products = Product.objects.all()
 
         for product in products:
@@ -45,6 +47,7 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
+    # permission_required = 'catalog.view_product'
 
     login_url = reverse_lazy('users:login')
 
@@ -143,3 +146,12 @@ class ProductDeleteView(LoginRequiredMixin,  DeleteView):
         if self.object.owner != self.request.user and not self.request.user.is_staff:
             raise Http404("Вы не являетесь владельцем этого товара")
         return self.object
+
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['category_list'] = get_cache_categories()
+        return context_data
